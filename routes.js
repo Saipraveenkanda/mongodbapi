@@ -43,19 +43,12 @@ app.post("/newuser", async (request, response) => {
 });
 
 app.get("/users", async (request, response) => {
-  /*const users = await userModel.find({});
+  const users = await userModel.find({});
   try {
     response.send(users);
   } catch (error) {
     response.status(500).send(error);
-  }*/
-  const client = MongoClient("mongodb://localhost:27017");
-  client
-    .db("userdata")
-    .collection("users")
-    .find({})
-    .then((res) => response.send(res))
-    .catch((err) => response.send(err));
+  }
 });
 
 app.delete("/deleteuser", async (request, response) => {
