@@ -1,20 +1,12 @@
 const express = require("express");
 const userModel = require("./post");
 const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 
 const app = express();
 
 app.post("/newuser", async (request, response) => {
   const client = new MongoClient("mongodb://localhost:27017");
-  //const { username, email, name, age } = request.body;
-  /*const user = new userModel(request.body);
-  try {
-    await user.save();
-    response.send(user);
-  } catch (error) {
-    response.status(500).send(error);
-  }*/
-
   const requestArray = request.body;
   console.log(requestArray);
   requestArray.map((each) => {
@@ -31,21 +23,21 @@ app.post("/newuser", async (request, response) => {
       })
       .catch((err) => response.send(err));
   });
-  /*client
-    .db("userdata")
-    .collection("users")
-    .insertMany({ name: name, email: email, username: username, age: age })
-    .then((res) => {
-      response.send(res);
-      client.close();
-    })
-    .catch((err) => response.send(err));*/
 });
 
 app.get("/users", async (request, response) => {
   const users = await userModel.find({});
   try {
     response.send(users);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.get("/allusers", async (request, response) => {
+  const User = await mongoose.model("users", new mongoose.Schema()).find({});
+  try {
+    response.send(User);
   } catch (error) {
     response.status(500).send(error);
   }
